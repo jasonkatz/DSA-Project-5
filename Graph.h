@@ -32,7 +32,7 @@ public:
 	// Finds shortest paths from provided starting vertex
 	// Returns 0 on success
 	// 1 if the starting vertex doesn't exist in graph
-	int dijkstra(std::string);
+	int shortestPathDijkstra(std::string);
 
 private:
 

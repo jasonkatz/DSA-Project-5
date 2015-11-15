@@ -62,7 +62,7 @@ graph::vertex::edge::edge(vertex * pv, int c) {
 	cost = c;
 }
 
-int graph::dijkstra(string startingVertexName) {
+int graph::shortestPathDijkstra(string startingVertexName) {
 	// Ensure the starting vertex exists in the graph
 	if (!contains(startingVertexName)) {
 		return 1;
