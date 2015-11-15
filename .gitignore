@@ -1,0 +1,6 @@
+*.vcxproj*
+Debug
+*.out
+*.o
+*.exe
+*.swp
