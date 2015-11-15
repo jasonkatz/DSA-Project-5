@@ -1,4 +1,5 @@
 #include <string>
+#include "Heap.h"
 #include "Graph.h"
 
 using namespace std;
@@ -41,11 +42,13 @@ int graph::insertEdge(string v1Name, string v2Name, int cost) {
 	return 0;
 }
 
+graph::vertex::vertex() : vertex("") { }
+
 graph::vertex::vertex(string n) {
 	name = n;
 	adjacentEdges = list<edge>();
 
-	visited = false;
+	known = false;
 	distance = INT_MAX;
 	lastVertex = NULL;
 }
@@ -55,7 +58,7 @@ void graph::vertex::insertEdge(vertex * pv, int c) {
 }
 
 graph::vertex::edge::edge(vertex * pv, int c) {
-	destinaion = pv;
+	destination = pv;
 	cost = c;
 }
 
@@ -67,6 +70,38 @@ int graph::dijkstra(string startingVertexName) {
 
 	vertex * startingVertex = (vertex *) vertexLookup.getPointer(startingVertexName);
 
+	heap data(vertexList.size());
+
+	// Set start node parameters
+	startingVertex->distance = 0;
+	startingVertex->known = true;
+	startingVertex->lastVertex = NULL;
+
+	// Insert each vertex into the priority queue
+	for (list<vertex *>::iterator it = vertexList.begin(); it != vertexList.end(); ++it) {
+		data.insert((*it)->name, (*it)->distance, (*it));
+	}
+
+	// Vertex container
+	vertex * pv = new vertex();
+
+	// Cycle through all vertices that are still in the unknown set (data object)
+	while (data.deleteMin(NULL, NULL, pv) == 0) {
+		pv->known = true;
+
+		// Loop through all outgoing edges incident upon current vertex
+		for (list<vertex::edge>::iterator it = pv->adjacentEdges.begin(); it != pv->adjacentEdges.end(); ++it) {
+			// Check if new path is better than old one
+			int newCost;
+			if ((newCost = pv->distance + (*it).cost) < (*it).destination->distance) {
+				// Set key in the priority queue
+				data.setKey((*it).destination->name, newCost);
+				// Update vertex data
+				(*it).destination->distance = newCost;
+				(*it).destination->lastVertex = pv;
+			}
+		}
+	}
 
 	return 0;
 }

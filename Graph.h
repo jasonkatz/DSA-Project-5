@@ -46,10 +46,11 @@ private:
 		public:
 			edge(vertex *, int);
 
-			vertex * destinaion;
+			vertex * destination;
 			int cost;
 		};
 
+		vertex();
 		vertex(std::string);
 		void insertEdge(vertex *, int);
 		
@@ -57,7 +58,7 @@ private:
 		std::list<edge> adjacentEdges;
 
 		// Dijkstra's algorithm utility variables
-		bool visited;
+		bool known;
 		int distance;
 		vertex * lastVertex;
 	};
