@@ -16,15 +16,23 @@ public:
 	// Checks if the graph contains specified vertex
 	bool contains(std::string);
 
-	// Inserts vertex into the graph
+	// Inserts a vertex into the graph
 	// Returns 0 on success
 	// 1 if the vertex already exists in the graph
 	// 2 if there is some other error
 	int insertVertex(std::string);
 
+	// Inserts an edge into the graph between two vertices with a given cost
+	// Returns 0 on success
+	// 1 if either vertex doesn't exist in the graph
+	int insertEdge(std::string, std::string, int);
+
 	// Execute Dijkstra's algorithm on the graph
 	// Rearranges the state of the graph according to the algorithm
-	void dijkstra(std::string);
+	// Finds shortest paths from provided starting vertex
+	// Returns 0 on success
+	// 1 if the starting vertex doesn't exist in graph
+	int dijkstra(std::string);
 
 private:
 
@@ -43,9 +51,15 @@ private:
 		};
 
 		vertex(std::string);
+		void insertEdge(vertex *, int);
 		
-		std::string id;
+		std::string name;
 		std::list<edge> adjacentEdges;
+
+		// Dijkstra's algorithm utility variables
+		bool visited;
+		int distance;
+		vertex * lastVertex;
 	};
 
 	hashTable vertexLookup;
