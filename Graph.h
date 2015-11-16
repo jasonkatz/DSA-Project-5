@@ -42,9 +42,7 @@ public:
 	// Execute Dijkstra's algorithm on the graph
 	// Rearranges the state of the graph according to the algorithm
 	// Finds shortest paths from provided starting vertex
-	// Returns 0 on success
-	// 1 if the starting vertex doesn't exist in graph
-	int shortestPathDijkstra(std::string);
+	void shortestPathDijkstra(std::string);
 
 	// Generates graph object from provided file
 	static graph generateFromFile(std::string);

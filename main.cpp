@@ -12,6 +12,7 @@ File: main.cpp
 
 #include <iostream>
 #include <string>
+#include <ctime>
 #include "Graph.h"
 
 using namespace std;
@@ -25,12 +26,19 @@ int main() {
 	graph g = graph::generateFromFile(inputFileName);
 
 	// Get starting vertex name
-	cout << "Enter a valid vertex name for the starting vertex: ";
 	string startingVertexName;
-	cin >> startingVertexName;
+	do {
+		cout << "Enter a valid vertex name for the starting vertex: ";
+		cin >> startingVertexName;
+	} while (!g.contains(startingVertexName));
+
+	// Set up timer
+	clock_t startTime = clock();
 
 	// Execute Dijkstra's Algorithm
 	g.shortestPathDijkstra(startingVertexName);
+
+	cout << "Total time spent executing Dijkstra's Algorithm: " << (double) (clock() - startTime) / 1000 << " seconds" << endl;
 
 	// Write graph to output file
 	cout << "Enter the name of an output file: ";
@@ -38,6 +46,5 @@ int main() {
 	cin >> outputFileName;
 	g.writeToFile(outputFileName);
 
-	system("pause");
 	return 0;
 }

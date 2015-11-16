@@ -77,12 +77,7 @@ graph::vertex::edge::edge(vertex * pv, int c) {
 	cost = c;
 }
 
-int graph::shortestPathDijkstra(string startingVertexName) {
-	// Ensure the starting vertex exists in the graph
-	if (!contains(startingVertexName)) {
-		return 1;
-	}
-
+void graph::shortestPathDijkstra(string startingVertexName) {
 	vertex * startingVertex = (vertex *) vertexLookup.getPointer(startingVertexName);
 
 	heap data(vertexList.size());
@@ -117,8 +112,6 @@ int graph::shortestPathDijkstra(string startingVertexName) {
 			}
 		}
 	}
-
-	return 0;
 }
 
 graph graph::generateFromFile(string fileName) {
@@ -131,11 +124,7 @@ graph graph::generateFromFile(string fileName) {
 		stringstream ss(line);
 		string v1Name, v2Name;
 		int cost;
-		if (!(ss >> v1Name >> v2Name >> cost)) {
-			cout << "Error in input file" << endl;
-			exit(1);
-			break; // Error
-		}
+		ss >> v1Name >> v2Name >> cost;
 
 		// Create any new vertices
 		if (!g.contains(v1Name)) {
