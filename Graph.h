@@ -1,3 +1,15 @@
+/*
+*****************************************
+Jason Katz
+ECE-165 Project 3: Dijkstra's Algorithm
+
+Graph implementation
+with Dijkstra's algorithm built in
+
+File: Graph.h
+*****************************************
+*/
+
 #ifndef GRAPH_H
 #define GRAPH_H
 
@@ -33,6 +45,12 @@ public:
 	// Returns 0 on success
 	// 1 if the starting vertex doesn't exist in graph
 	int shortestPathDijkstra(std::string);
+
+	// Generates graph object from provided file
+	static graph generateFromFile(std::string);
+
+	// Writes graph data to provided file, with an indicator of the startingVertex
+	void writeToFile(std::string);
 
 private:
 

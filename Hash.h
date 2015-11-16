@@ -1,3 +1,15 @@
+/*
+*****************************************
+Jason Katz
+ECE-165 Project 3: Dijkstra's Algorithm
+
+Graph implementation
+with Dijkstra's algorithm built in
+
+File: Hash.h
+*****************************************
+*/
+
 #ifndef _HASH_H
 #define _HASH_H
 

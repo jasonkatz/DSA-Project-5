@@ -1,4 +1,19 @@
+/*
+*****************************************
+Jason Katz
+ECE-165 Project 3: Dijkstra's Algorithm
+
+Graph implementation
+with Dijkstra's algorithm built in
+
+File: Graph.cpp
+*****************************************
+*/
+
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 #include "Heap.h"
 #include "Graph.h"
 
@@ -49,7 +64,7 @@ graph::vertex::vertex(string n) {
 	adjacentEdges = list<edge>();
 
 	known = false;
-	distance = INT_MAX;
+	distance = 1000000000;
 	lastVertex = NULL;
 }
 
@@ -86,7 +101,7 @@ int graph::shortestPathDijkstra(string startingVertexName) {
 	vertex * pv = new vertex();
 
 	// Cycle through all vertices that are still in the unknown set (data object)
-	while (data.deleteMin(NULL, NULL, pv) == 0) {
+	while (data.deleteMin(NULL, NULL, &pv) == 0) {
 		pv->known = true;
 
 		// Loop through all outgoing edges incident upon current vertex
@@ -104,4 +119,76 @@ int graph::shortestPathDijkstra(string startingVertexName) {
 	}
 
 	return 0;
+}
+
+graph graph::generateFromFile(string fileName) {
+	ifstream inputFile(fileName);
+
+	graph g;
+
+	string line;
+	while (getline(inputFile, line)) {
+		stringstream ss(line);
+		string v1Name, v2Name;
+		int cost;
+		if (!(ss >> v1Name >> v2Name >> cost)) {
+			cout << "Error in input file" << endl;
+			exit(1);
+			break; // Error
+		}
+
+		// Create any new vertices
+		if (!g.contains(v1Name)) {
+			g.insertVertex(v1Name);
+		}
+		if (!g.contains(v2Name)) {
+			g.insertVertex(v2Name);
+		}
+
+		// Add edge
+		g.insertEdge(v1Name, v2Name, cost);
+	}
+
+	inputFile.close();
+
+	return g;
+}
+
+void graph::writeToFile(string fileName) {
+	ofstream outputFile(fileName);
+
+	for (list<vertex *>::iterator it = vertexList.begin(); it != vertexList.end(); ++it) {
+		outputFile << (*it)->name << ": ";
+
+		// If the vertex has no last vertex and a nonzero distance, there is no path
+		if (!(*it)->lastVertex && (*it)->distance) {
+			outputFile << "NO PATH\n";
+			continue;
+		}
+
+		outputFile << (*it)->distance << " ";
+
+		// Compile list of vertex names along the path (in order)
+		list<string> vertexOrder;
+		vertexOrder.push_front((*it)->name);
+		vertex * last = (*it)->lastVertex;
+		while (last) {
+			vertexOrder.push_front(last->name);
+			last = last->lastVertex;
+		}
+
+		outputFile << "[";
+
+		// Loop through the vertex names and output them
+		int count = 0;
+		for (list<string>::iterator it2 = vertexOrder.begin(); it2 != vertexOrder.end(); ++it2) {
+			outputFile << *it2;
+			++count;
+			if (count != vertexOrder.size()) {
+				outputFile << ", ";
+			}
+		}
+
+		outputFile << "]\n";
+	}
 }
